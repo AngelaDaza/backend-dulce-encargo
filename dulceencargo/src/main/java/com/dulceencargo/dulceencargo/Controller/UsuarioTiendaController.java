@@ -34,8 +34,8 @@ public class UsuarioTiendaController {
     }
 
     // Modificar Tienda
-    @PutMapping
-    public UsuarioTienda modificarUsuarioTienda(@PathVariable Long id, UsuarioTienda nuevoUsuarioTienda){
+    @PutMapping("/{id}")
+    public UsuarioTienda modificarUsuarioTienda(@PathVariable Long id, @RequestBody UsuarioTienda nuevoUsuarioTienda){
         return usuarioTiendaRepository.findById(id).map(usuarioTienda-> {
             usuarioTienda.setName(nuevoUsuarioTienda.getName());
             usuarioTienda.setTypeBussines(nuevoUsuarioTienda.getTypeBussines());

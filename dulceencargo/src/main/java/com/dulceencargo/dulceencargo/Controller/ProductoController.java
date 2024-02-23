@@ -21,32 +21,25 @@ public class ProductoController {
     @GetMapping
     public List<Producto> obtenerTodosLosProductos(){
         List<Producto> productos = productoRepository.findAll();
-        for(Producto producto: productos){
-            calculateDiscount(producto);
-        }
         return productos;
     }
 
     // Obtener producto por ID
-    @GetMapping("/productos/{id}")
+    @GetMapping("/{id}")
     public Producto obtenerProductoPorId(@PathVariable Long id) {
         Optional<Producto> optionalProducto = productoRepository.findById(id);
         if (((Optional<?>) optionalProducto).isPresent()) {
             Producto producto = optionalProducto.get();
-            calculateDiscount(producto); // Calcular el descuento para el producto
             return producto;
         } else {
             return null;
         }
     }
-    
-    private void calculateDiscount(Producto producto) {
-        producto.setDiscount(producto.getRegularPrice() - producto.getFinalPrice());
-    }
 
     // Crear un Nuevo Producto
     @PostMapping
     public Producto crearProducto(@RequestBody Producto producto){
+        calculateDiscount(producto); // Calcular el descuento para el producto
         return productoRepository.save(producto);
     }
 
@@ -69,5 +62,10 @@ public class ProductoController {
     @DeleteMapping("/{id}")
     public void eliminarProducto(@PathVariable Long id){
         productoRepository.deleteById(id);
+    }
+
+    // Metodo para calcular descuento antes de guardar el producto
+    private void calculateDiscount(Producto producto) {
+        producto.setDiscount(producto.getRegularPrice() - producto.getFinalPrice());
     }
 }

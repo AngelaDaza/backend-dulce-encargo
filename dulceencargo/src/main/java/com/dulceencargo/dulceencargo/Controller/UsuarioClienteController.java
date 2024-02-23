@@ -34,8 +34,8 @@ public class UsuarioClienteController {
     }
 
     // Modificar Cliente
-    @PutMapping
-    public UsuarioCliente modificarUsuarioCliente(@PathVariable Long id, UsuarioCliente nuevoUsuarioCliente){
+    @PutMapping("/{id}")
+    public UsuarioCliente modificarUsuarioCliente(@PathVariable Long id, @RequestBody UsuarioCliente nuevoUsuarioCliente){
         return usuarioClienteRepository.findById(id).map(usuarioCliente-> {
             usuarioCliente.setName(nuevoUsuarioCliente.getName());
             usuarioCliente.setSurname(nuevoUsuarioCliente.getSurname());
