@@ -24,14 +24,15 @@ public class ComprasServiceIMPL implements ComprasService{
     }
 
     @Override
-    public Compras obtenerComprasPorStatus(String statusShopping) {
+    public List<Compras> obtenerComprasPorStatus(String statusShopping) {
         Compras compra = comprasRepository.findByStatusShopping(statusShopping);
         if(compra != null){
-            return compra;
+            return (List<Compras>) compra;
         }  else{
             throw new RuntimeException("No se encontro compras con este estatus.");
         }
     }
+
 /*
     @Override
     public Compras obtenerComprasPorHora(LocalTime hour) {

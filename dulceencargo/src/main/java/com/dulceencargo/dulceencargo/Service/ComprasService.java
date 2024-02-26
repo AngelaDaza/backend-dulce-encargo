@@ -23,7 +23,7 @@ public interface ComprasService {
     public Compras modificarEstadoCompra(Long id, Compras nuevaCompra);
 
     // Obtener compra por estado
-    public Compras obtenerComprasPorStatus(String statusShopping);
+    public List<Compras> obtenerComprasPorStatus(String statusShopping);
 /*
     // Obtener compra por hora
     public Compras obtenerComprasPorHora(LocalTime hour);*/

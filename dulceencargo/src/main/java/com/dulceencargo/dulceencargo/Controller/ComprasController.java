@@ -28,26 +28,31 @@ public class ComprasController {
         List<Compras> comprasList = this.comprasServiceIMPL.obtenerTodasLasCompras();
         return ResponseEntity.ok(comprasList);
     }
+
+    // Obtener compra por ID
     @GetMapping
     @RequestMapping(value = "obtenerComprasPorId/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> obtenerComprasPorId(@PathVariable Long id){
         Compras compra = this.comprasServiceIMPL.obtenerComprasPorId(id);
         return ResponseEntity.ok(compra);
     }
+    // Obtener compras por status
     @GetMapping
     @RequestMapping(value = "obtenerComprasPorStatus/{statusShopping}", method = RequestMethod.GET)
     public ResponseEntity<?> obtenerComprasPorStatus(@PathVariable String statusShopping){
-        Compras compra = this.comprasServiceIMPL.obtenerComprasPorStatus(statusShopping);
+        List<Compras> compra = this.comprasServiceIMPL.obtenerComprasPorStatus(statusShopping);
         return ResponseEntity.ok(compra);
-    }
-/*
-    // Obtener compra por ID
-    @GetMapping("/{id}")
-    public Compras obtenerComprasPorId(@PathVariable Long id){
-        return comprasRepository.findById(id).orElse(null);
     }
 
     // Crear una Nueva Compra
+    @PostMapping
+    @RequestMapping(value = "crearCompra", method = RequestMethod.POST)
+    public ResponseEntity<?> crearCompra(@PathVariable String statusShopping){
+        List<Compras> compra = this.comprasServiceIMPL.obtenerComprasPorStatus(statusShopping);
+        return ResponseEntity.ok(compra);
+    }
+/*
+       // Crear una Nueva Compra
     @PostMapping
     public Compras crearCompra(@RequestBody Compras compra){
         return comprasRepository.save(compra);
