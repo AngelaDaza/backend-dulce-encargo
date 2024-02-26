@@ -2,6 +2,10 @@ package com.dulceencargo.dulceencargo.Controller;
 
 import com.dulceencargo.dulceencargo.Entity.Compras;
 import com.dulceencargo.dulceencargo.Repository.ComprasRepository;
+import com.dulceencargo.dulceencargo.Service.ComprasServiceIMPL;
+import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,19 +13,34 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/compras")
 public class ComprasController {
-    private final ComprasRepository comprasRepository;
+    @Autowired
+    private final ComprasServiceIMPL comprasServiceIMPL;
 
     // Constructor
-    public ComprasController(ComprasRepository comprasRepository) {
-        this.comprasRepository = comprasRepository;
+    public ComprasController(ComprasServiceIMPL comprasServiceIMPL) {
+        this.comprasServiceIMPL = comprasServiceIMPL;
     }
 
     // Obtener todas las compras
     @GetMapping
-    public List<Compras> obtenerTodasLasCompras(){
-        return comprasRepository.findAll();
+    @RequestMapping(value = "obtenerTodasLasCompras", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerTodasLasCompras(){
+        List<Compras> comprasList = this.comprasServiceIMPL.obtenerTodasLasCompras();
+        return ResponseEntity.ok(comprasList);
     }
-
+    @GetMapping
+    @RequestMapping(value = "obtenerComprasPorId/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerComprasPorId(@PathVariable Long id){
+        Compras compra = this.comprasServiceIMPL.obtenerComprasPorId(id);
+        return ResponseEntity.ok(compra);
+    }
+    @GetMapping
+    @RequestMapping(value = "obtenerComprasPorStatus/{statusShopping}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerComprasPorStatus(@PathVariable String statusShopping){
+        Compras compra = this.comprasServiceIMPL.obtenerComprasPorStatus(statusShopping);
+        return ResponseEntity.ok(compra);
+    }
+/*
     // Obtener compra por ID
     @GetMapping("/{id}")
     public Compras obtenerComprasPorId(@PathVariable Long id){
@@ -41,5 +60,5 @@ public class ComprasController {
             compra.setStatusShopping(nuevaCompra.getStatusShopping());
             return comprasRepository.save(compra);
         }).orElse((null));
-    }
+    }*/
 }
