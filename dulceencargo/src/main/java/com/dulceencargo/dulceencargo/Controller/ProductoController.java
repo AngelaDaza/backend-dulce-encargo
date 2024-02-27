@@ -1,7 +1,13 @@
 package com.dulceencargo.dulceencargo.Controller;
 
+import com.dulceencargo.dulceencargo.Entity.Compras;
 import com.dulceencargo.dulceencargo.Entity.Producto;
 import com.dulceencargo.dulceencargo.Repository.ProductoRepository;
+import com.dulceencargo.dulceencargo.Service.ProductoServiceIMPL;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,62 +16,80 @@ import java.util.Optional;
 @RestController
 @RequestMapping(path = "/productos")
 public class ProductoController {
-    private final ProductoRepository productoRepository;
+    @Autowired
+    private final ProductoServiceIMPL productoServiceIMPL;
 
     // Constructor
-    public ProductoController(ProductoRepository productoRepository) {
-        this.productoRepository = productoRepository;
+    public ProductoController(ProductoServiceIMPL productoServiceIMPL) {
+        this.productoServiceIMPL = productoServiceIMPL;
     }
 
     // Obtener todos los productos
     @GetMapping
-    public List<Producto> obtenerTodosLosProductos(){
-        List<Producto> productos = productoRepository.findAll();
-        return productos;
+    @RequestMapping(value = "obtenerTodosLosProductos", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerTodosLosProductos(){
+        List<Producto> productosList = this.productoServiceIMPL.obtenerTodosLosProductos();
+        return ResponseEntity.ok(productosList);
     }
 
     // Obtener producto por ID
     @GetMapping("/{id}")
-    public Producto obtenerProductoPorId(@PathVariable Long id) {
-        Optional<Producto> optionalProducto = productoRepository.findById(id);
-        if (((Optional<?>) optionalProducto).isPresent()) {
-            Producto producto = optionalProducto.get();
-            return producto;
-        } else {
-            return null;
-        }
+    @RequestMapping(value = "obtenerProductoPorId/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerProductoPorId(@PathVariable Long id){
+        Producto producto = this.productoServiceIMPL.obtenerProductoPorId(id);
+        return ResponseEntity.ok(producto);
     }
 
     // Crear un Nuevo Producto
     @PostMapping
-    public Producto crearProducto(@RequestBody Producto producto){
-        calculateDiscount(producto); // Calcular el descuento para el producto
-        return productoRepository.save(producto);
+    @RequestMapping(value = "crearProducto", method = RequestMethod.POST)
+    public ResponseEntity<?> crearProducto(@RequestBody Producto producto){
+        return ResponseEntity.ok(productoServiceIMPL.crearProducto(producto));
     }
 
     // Modificar producto
-    @PutMapping("/{id}")
-    public Producto modificarProducto(@PathVariable Long id, Producto nuevoProducto){
-        return productoRepository.findById(id).map(producto -> {
-            producto.setName(nuevoProducto.getName());
-            producto.setUrlImage(nuevoProducto.getUrlImage());
-            producto.setDescription(nuevoProducto.getDescription());
-            producto.setStock(nuevoProducto.getStock());
-            producto.setRegularPrice(nuevoProducto.getRegularPrice());
-            producto.setFinalPrice(nuevoProducto.getFinalPrice());
-            producto.setCategory(nuevoProducto.getCategory());
-            return productoRepository.save(producto);
-        }).orElse((null));
+    @PutMapping
+    @RequestMapping(value = "modificarProducto/{id}",method = RequestMethod.PUT)
+    public ResponseEntity<?> modificarProducto(@PathVariable Long id, @RequestBody Producto producto){
+        Producto nuevoProducto=this.productoServiceIMPL.modificarProducto(id, producto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoProducto);
     }
 
-    // Eliminar Producto
-    @DeleteMapping("/{id}")
-    public void eliminarProducto(@PathVariable Long id){
-        productoRepository.deleteById(id);
+    //Eliminar producto
+    @DeleteMapping
+    @RequestMapping(value = "eliminarProducto/{id}",method = RequestMethod.DELETE)
+    public ResponseEntity<?> eliminarProducto(@PathVariable Long id){
+        this.productoServiceIMPL.eliminarProducto(id);
+        return ResponseEntity.ok().build();
     }
 
-    // Metodo para calcular descuento antes de guardar el producto
-    private void calculateDiscount(Producto producto) {
-        producto.setDiscount(producto.getRegularPrice() - producto.getFinalPrice());
+    // Obtener productos por nombre
+    @GetMapping
+    @RequestMapping(value = "obtenerProductoPorName/{name}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerProductoPorName(@PathVariable String name){
+        List<Producto> productos = this.productoServiceIMPL.findByName(name);
+        return ResponseEntity.ok(productos);
     }
+    // Obtener productos por nombre
+    @GetMapping
+    @RequestMapping(value = "obtenerProductoPorCategoria/{category}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerProductoPorCategoria(@PathVariable String category){
+        List<Producto> productos = this.productoServiceIMPL.findByCategory(category);
+        return ResponseEntity.ok(productos);
+    }
+    // Obtener productos ordenados de mayor a menor
+    @GetMapping
+    @RequestMapping(value = "obtenerProductoDeMayorAMenor", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerProductoDeMayorAMenor(){
+        List<Producto> productos = this.productoServiceIMPL.findAllByOrderByFinalPriceDesc();
+        return ResponseEntity.ok(productos);
+    }
+    // Obtener productos ordenados de menor a mayor
+    @GetMapping
+    @RequestMapping(value = "obtenerProductoDeMenorAMayor", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerProductoDeMenorAMayor(){
+        List<Producto> productos = this.productoServiceIMPL.findAllByOrderByFinalPriceAsc();
+        return ResponseEntity.ok(productos);
+    }
+
 }

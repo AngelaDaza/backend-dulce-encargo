@@ -25,9 +25,9 @@ public class ComprasServiceIMPL implements ComprasService{
 
     @Override
     public List<Compras> obtenerComprasPorStatus(String statusShopping) {
-        Compras compra = comprasRepository.findByStatusShopping(statusShopping);
-        if(compra != null){
-            return (List<Compras>) compra;
+        List<Compras> compras = comprasRepository.findByStatusShopping(statusShopping);
+        if(compras != null){
+            return compras;
         }  else{
             throw new RuntimeException("No se encontro compras con este estatus.");
         }

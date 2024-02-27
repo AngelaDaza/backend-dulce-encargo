@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class Compras {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
     private Integer amount;

@@ -47,9 +47,8 @@ public class ComprasController {
     // Crear una Nueva Compra
     @PostMapping
     @RequestMapping(value = "crearCompra", method = RequestMethod.POST)
-    public ResponseEntity<?> crearCompra(@PathVariable String statusShopping){
-        List<Compras> compra = this.comprasServiceIMPL.obtenerComprasPorStatus(statusShopping);
-        return ResponseEntity.ok(compra);
+    public ResponseEntity<?> crearCompra(@RequestBody Compras compra){
+        return ResponseEntity.ok(comprasServiceIMPL.crearCompra(compra));
     }
 /*
        // Crear una Nueva Compra
