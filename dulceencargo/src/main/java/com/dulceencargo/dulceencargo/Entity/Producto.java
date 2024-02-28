@@ -1,9 +1,13 @@
 package com.dulceencargo.dulceencargo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -23,5 +27,15 @@ public class Producto {
     private Double finalPrice;
     private String category;
     private Double discount;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuarioTienda" , nullable = false)
+    @JsonManagedReference
+    private UsuarioTienda idTienda;
+
+    @OneToMany (cascade = CascadeType.ALL, mappedBy = "idProducto")
+    @JsonIgnore
+    private List<Compras> compras;
+
 
 }

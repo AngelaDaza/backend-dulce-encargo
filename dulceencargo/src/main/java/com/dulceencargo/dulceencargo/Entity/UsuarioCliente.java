@@ -1,9 +1,12 @@
 package com.dulceencargo.dulceencargo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -24,4 +27,8 @@ public class UsuarioCliente {
     private String phone;
     private String username;
     private String password;
+
+    @OneToMany (cascade = CascadeType.ALL, mappedBy = "idUsuarioCliente")
+    @JsonIgnore
+    private List<Compras> compras;
 }
