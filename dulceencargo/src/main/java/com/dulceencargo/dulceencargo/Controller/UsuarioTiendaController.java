@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/usuariotienda")
+@CrossOrigin(origins = "http://127.0.0.1:5502")
 public class UsuarioTiendaController {
     @Autowired
     private final UsuarioTiendaServiceIMPL usuarioTiendaServiceIMPL;
