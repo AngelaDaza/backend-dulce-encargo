@@ -1,5 +1,7 @@
 package com.dulceencargo.dulceencargo;
 
+import com.dulceencargo.dulceencargo.Controller.ComprasController;
+import com.dulceencargo.dulceencargo.Entity.Compras;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

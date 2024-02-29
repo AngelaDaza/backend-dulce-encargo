@@ -1,6 +1,7 @@
 package com.dulceencargo.dulceencargo.Service;
 
 import com.dulceencargo.dulceencargo.Entity.Compras;
+import com.dulceencargo.dulceencargo.Entity.UsuarioCliente;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
@@ -24,7 +25,10 @@ public interface ComprasService {
 
     // Obtener compra por estado
     public List<Compras> obtenerComprasPorStatus(String statusShopping);
-/*
-    // Obtener compra por hora
-    public Compras obtenerComprasPorHora(LocalTime hour);*/
+
+    //Obtener compra por hora
+    public List<Compras> findByHour(String hour);
+
+    //Obtener compras por usuario cliente
+    //public List<Compras> findByUsuarioCliente(UsuarioCliente usuarioCliente);
 }

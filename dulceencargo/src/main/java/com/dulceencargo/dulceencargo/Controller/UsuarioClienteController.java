@@ -1,59 +1,62 @@
 package com.dulceencargo.dulceencargo.Controller;
 
 import com.dulceencargo.dulceencargo.Entity.UsuarioCliente;
+import com.dulceencargo.dulceencargo.Entity.UsuarioTienda;
 import com.dulceencargo.dulceencargo.Repository.UsuarioClienteRepository;
+import com.dulceencargo.dulceencargo.Service.UsuarioClienteServiceIMPL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/usuariocliente")
+@CrossOrigin(origins = "http://127.0.0.1:5502")
 public class UsuarioClienteController {
-    private final UsuarioClienteRepository usuarioClienteRepository;
-    // Constructor
-    public UsuarioClienteController(UsuarioClienteRepository usuarioClienteRepository) {
-        this.usuarioClienteRepository = usuarioClienteRepository;
+    @Autowired
+    private final UsuarioClienteServiceIMPL usuarioClienteServiceIMPL;
+
+    public UsuarioClienteController(UsuarioClienteServiceIMPL usuarioClienteServiceIMPL) {
+        this.usuarioClienteServiceIMPL = usuarioClienteServiceIMPL;
     }
 
-    // Obtener todos los clientes
+    // Obtener todos los usuarios cliente
     @GetMapping
-    public List<UsuarioCliente> obtenerTodosLosClientes(){
-        return usuarioClienteRepository.findAll();
+    @RequestMapping(value = "obtenerTodosLosUsuariosCliente", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerTodosLosUsuariosCliente(){
+        List<UsuarioCliente> usuariosClienteList = this.usuarioClienteServiceIMPL.obtenerTodosLosUsuariosCliente();
+        return ResponseEntity.ok(usuariosClienteList);
     }
-
     // Obtener cliente por ID
     @GetMapping("/{id}")
-    public UsuarioCliente obtenerClientePorId(@PathVariable Long id){
-        return usuarioClienteRepository.findById(id).orElse(null);
+    @RequestMapping(value = "obtenerUsuarioClientePorId/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerUsuarioClientePorId(@PathVariable Long id){
+        UsuarioCliente usuarioCliente = this.usuarioClienteServiceIMPL.obtenerUsuarioClientePorId(id);
+        return ResponseEntity.ok(usuarioCliente);
     }
 
     // Crear un Nuevo Cliente
     @PostMapping
-    public UsuarioCliente crearUsuarioCliente(@RequestBody UsuarioCliente usuarioCliente){
-        return usuarioClienteRepository.save(usuarioCliente);
+    @RequestMapping(value = "crearUsuarioCliente", method = RequestMethod.POST)
+    public ResponseEntity<?> crearUsuarioCliente(@RequestBody UsuarioCliente usuarioCliente){
+        return ResponseEntity.ok(usuarioClienteServiceIMPL.crearUsuarioCliente(usuarioCliente));
     }
 
     // Modificar Cliente
-    @PutMapping("/{id}")
-    public UsuarioCliente modificarUsuarioCliente(@PathVariable Long id, @RequestBody UsuarioCliente nuevoUsuarioCliente){
-        return usuarioClienteRepository.findById(id).map(usuarioCliente-> {
-            usuarioCliente.setName(nuevoUsuarioCliente.getName());
-            usuarioCliente.setSurname(nuevoUsuarioCliente.getSurname());
-            usuarioCliente.setTypeDocument(nuevoUsuarioCliente.getTypeDocument());
-            usuarioCliente.setNumberDocument(nuevoUsuarioCliente.getNumberDocument());
-            usuarioCliente.setLocality(nuevoUsuarioCliente.getLocality());
-            usuarioCliente.setAddress(nuevoUsuarioCliente.getAddress());
-            usuarioCliente.setEmail(nuevoUsuarioCliente.getEmail());
-            usuarioCliente.setPhone(nuevoUsuarioCliente.getPhone());
-            usuarioCliente.setUsername(nuevoUsuarioCliente.getUsername());
-            usuarioCliente.setPassword(nuevoUsuarioCliente.getPassword());
-            return usuarioClienteRepository.save(usuarioCliente);
-        }).orElse((null));
+    @PutMapping
+    @RequestMapping(value = "modificarUsuarioCliente/{id}",method = RequestMethod.PUT)
+    public ResponseEntity<?> modificarUsuarioCliente(@PathVariable Long id, @RequestBody UsuarioCliente usuarioCliente){
+        UsuarioCliente nuevoUsuarioCliente=this.usuarioClienteServiceIMPL.modificarUsuarioCliente(id, usuarioCliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuarioCliente);
     }
 
     // Eliminar Cliente
-    @DeleteMapping("/{id}")
-    public void eliminarUsuarioCliente(@PathVariable Long id){
-        usuarioClienteRepository.deleteById(id);
+    @DeleteMapping
+    @RequestMapping(value = "eliminarUsuarioCliente/{id}",method = RequestMethod.DELETE)
+    public ResponseEntity<?> eliminarUsuarioCliente(@PathVariable Long id){
+        this.usuarioClienteServiceIMPL.eliminarUsuarioCliente(id);
+        return ResponseEntity.ok().build();
     }
 }
