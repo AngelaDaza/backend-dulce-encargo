@@ -1,5 +1,6 @@
 package com.dulceencargo.dulceencargo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -28,14 +29,12 @@ public class Producto {
     private String category;
     private Double discount;
 
+
+
+
     @ManyToOne
-    @JoinColumn(name = "id_usuarioTienda" , nullable = false)
-    @JsonManagedReference
+    @JoinColumn(name = "id_usuarioTienda", nullable = false)
+    @JsonBackReference
     private UsuarioTienda idTienda;
-
-    @OneToMany (cascade = CascadeType.ALL, mappedBy = "idProducto")
-    @JsonIgnore
-    private List<Compras> compras;
-
 
 }

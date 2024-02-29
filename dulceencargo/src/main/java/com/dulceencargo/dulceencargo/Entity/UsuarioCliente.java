@@ -28,7 +28,5 @@ public class UsuarioCliente {
     private String username;
     private String password;
 
-    @OneToMany (cascade = CascadeType.ALL, mappedBy = "idUsuarioCliente")
-    @JsonIgnore
-    private List<Compras> compras;
+
 }

@@ -1,6 +1,7 @@
 package com.dulceencargo.dulceencargo.Controller;
 
 import com.dulceencargo.dulceencargo.Entity.Compras;
+import com.dulceencargo.dulceencargo.Entity.UsuarioCliente;
 import com.dulceencargo.dulceencargo.Repository.ComprasRepository;
 import com.dulceencargo.dulceencargo.Service.ComprasServiceIMPL;
 import org.apache.coyote.Response;
@@ -50,19 +51,19 @@ public class ComprasController {
     public ResponseEntity<?> crearCompra(@RequestBody Compras compra){
         return ResponseEntity.ok(comprasServiceIMPL.crearCompra(compra));
     }
-/*
-       // Crear una Nueva Compra
-    @PostMapping
-    public Compras crearCompra(@RequestBody Compras compra){
-        return comprasRepository.save(compra);
+    // Obtener compras por hora
+    @GetMapping
+    @RequestMapping(value = "obtenerComprasPorHora/{hour}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerComprasPorHora(@PathVariable String hour){
+        List<Compras> compra = this.comprasServiceIMPL.findByHour(hour);
+        return ResponseEntity.ok(compra);
     }
-
-    // Modificar compra por estado
-    @PutMapping("/{id}")
-    public Compras modificarEstadoCompra(@PathVariable Long id, @RequestBody Compras nuevaCompra){
-        return comprasRepository.findById(id).map(compra -> {
-            compra.setStatusShopping(nuevaCompra.getStatusShopping());
-            return comprasRepository.save(compra);
-        }).orElse((null));
+/*
+    // Obtener compras por usuario cliente
+    @GetMapping
+    @RequestMapping(value = "obtenerComprasPorUsuarioCliente/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerComprasPorUsuarioCliente(@PathVariable UsuarioCliente usuarioCliente){
+        List<Compras> compra = this.comprasServiceIMPL.findByUsuarioCliente(usuarioCliente);
+        return ResponseEntity.ok(compra);
     }*/
 }

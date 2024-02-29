@@ -2,6 +2,7 @@ package com.dulceencargo.dulceencargo.Controller;
 
 import com.dulceencargo.dulceencargo.Entity.Compras;
 import com.dulceencargo.dulceencargo.Entity.Producto;
+import com.dulceencargo.dulceencargo.Entity.UsuarioTienda;
 import com.dulceencargo.dulceencargo.Repository.ProductoRepository;
 import com.dulceencargo.dulceencargo.Service.ProductoServiceIMPL;
 import lombok.AllArgsConstructor;
@@ -75,6 +76,13 @@ public class ProductoController {
     @RequestMapping(value = "obtenerProductoPorCategoria/{category}", method = RequestMethod.GET)
     public ResponseEntity<?> obtenerProductoPorCategoria(@PathVariable String category){
         List<Producto> productos = this.productoServiceIMPL.findByCategory(category);
+        return ResponseEntity.ok(productos);
+    }
+    // Obtener productos por tienda
+    @GetMapping
+    @RequestMapping(value = "obtenerProductoPorIdTienda/{idTienda}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerProductoPorIdTienda(@PathVariable UsuarioTienda idTienda){
+        List<Producto> productos = this.productoServiceIMPL.findByIdTienda(idTienda);
         return ResponseEntity.ok(productos);
     }
     // Obtener productos ordenados de mayor a menor

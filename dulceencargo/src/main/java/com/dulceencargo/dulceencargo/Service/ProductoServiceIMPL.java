@@ -2,6 +2,7 @@ package com.dulceencargo.dulceencargo.Service;
 
 import com.dulceencargo.dulceencargo.Entity.Compras;
 import com.dulceencargo.dulceencargo.Entity.Producto;
+import com.dulceencargo.dulceencargo.Entity.UsuarioTienda;
 import com.dulceencargo.dulceencargo.Repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ public class ProductoServiceIMPL implements ProductoService{
             producto.setRegularPrice(nuevoProducto.getRegularPrice());
             producto.setFinalPrice(nuevoProducto.getFinalPrice());
             producto.setCategory(nuevoProducto.getCategory());
+            producto.setIdTienda(nuevoProducto.getIdTienda());
             return productoRepository.save(producto);
         }).orElse((null));
     }
@@ -79,6 +81,12 @@ public class ProductoServiceIMPL implements ProductoService{
         }  else{
             throw new RuntimeException("No se encontro productos con esta categoria.");
         }
+    }
+
+    @Override
+    public List<Producto> findByIdTienda(UsuarioTienda idTienda) {
+        List<Producto> productos = productoRepository.findByIdTienda(idTienda);
+        return productos;
     }
 
     @Override

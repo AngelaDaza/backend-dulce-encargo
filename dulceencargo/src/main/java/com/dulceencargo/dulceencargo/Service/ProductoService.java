@@ -1,6 +1,7 @@
 package com.dulceencargo.dulceencargo.Service;
 
 import com.dulceencargo.dulceencargo.Entity.Producto;
+import com.dulceencargo.dulceencargo.Entity.UsuarioTienda;
 
 import java.util.List;
 
@@ -29,6 +30,9 @@ public interface ProductoService {
 
     //Obtener producto por categoria
     public List<Producto> findByCategory(String category);
+
+    // Obtener producto por tienda
+    public List<Producto> findByIdTienda(UsuarioTienda idTienda);
 
     //Ordenar precio final por mayor precio
     public List<Producto> findAllByOrderByFinalPriceDesc();

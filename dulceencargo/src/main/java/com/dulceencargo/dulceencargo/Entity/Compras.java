@@ -22,11 +22,19 @@ public class Compras {
     private Long id;
     private LocalDate date;
     private Integer amount;
-    @Column(columnDefinition = "TIME")
-    private LocalTime hour;
+    @Column
+    private String hour;
     @Column(name = "status_shopping")
     private String statusShopping;
 
+    @ManyToOne
+    @JoinColumn(name = "id_usuario_cliente")
+    private UsuarioCliente usuarioCliente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
+    /*
     @ManyToOne
     @JoinColumn(name= "id_usuarioCliente", nullable = false)
     @JsonManagedReference
@@ -35,6 +43,6 @@ public class Compras {
     @ManyToOne
     @JoinColumn(name="id_producto", nullable = false)
     @JsonManagedReference
-    private Producto idProducto;
+    private Producto idProducto;*/
 
 }
