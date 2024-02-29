@@ -1,6 +1,7 @@
 package com.dulceencargo.dulceencargo.Service;
 
 import com.dulceencargo.dulceencargo.Entity.Compras;
+import com.dulceencargo.dulceencargo.Entity.UsuarioCliente;
 import com.dulceencargo.dulceencargo.Repository.ComprasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,15 +26,34 @@ public class ComprasServiceIMPL implements ComprasService{
 
     @Override
     public List<Compras> obtenerComprasPorStatus(String statusShopping) {
-        Compras compra = comprasRepository.findByStatusShopping(statusShopping);
-        if(compra != null){
-            return (List<Compras>) compra;
+        List<Compras> compras = comprasRepository.findByStatusShopping(statusShopping);
+        if(compras != null){
+            return compras;
         }  else{
             throw new RuntimeException("No se encontro compras con este estatus.");
         }
     }
 
+    @Override
+    public List<Compras> findByHour(String hour) {
+        List<Compras> compras = comprasRepository.findByHour(hour);
+        if(compras != null){
+            return compras;
+        }  else{
+            throw new RuntimeException("No se encontro compras con este horario.");
+        }
+    }
 /*
+    @Override
+    public List<Compras> findByUsuarioCliente(UsuarioCliente usuarioCliente) {
+        List<Compras> compras = comprasRepository.findByUsuarioCliente(usuarioCliente);
+        if(compras != null){
+            return compras;
+        }  else{
+            throw new RuntimeException("No se encontro compras con este usuario cliente.");
+        }
+    }
+    /*
     @Override
     public Compras obtenerComprasPorHora(LocalTime hour) {
         Compras compra = comprasRepository.findByHour(hour);

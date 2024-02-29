@@ -1,7 +1,13 @@
 package com.dulceencargo.dulceencargo.Controller;
 
+import com.dulceencargo.dulceencargo.Entity.Producto;
 import com.dulceencargo.dulceencargo.Entity.UsuarioTienda;
 import com.dulceencargo.dulceencargo.Repository.UsuarioTiendaRepository;
+import com.dulceencargo.dulceencargo.Service.UsuarioTiendaService;
+import com.dulceencargo.dulceencargo.Service.UsuarioTiendaServiceIMPL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,52 +15,50 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/usuariotienda")
 public class UsuarioTiendaController {
-    private final UsuarioTiendaRepository usuarioTiendaRepository;
-    // Constructor
-    public UsuarioTiendaController(UsuarioTiendaRepository usuarioTiendaRepository) {
-        this.usuarioTiendaRepository = usuarioTiendaRepository;
+    @Autowired
+    private final UsuarioTiendaServiceIMPL usuarioTiendaServiceIMPL;
+
+    public UsuarioTiendaController(UsuarioTiendaServiceIMPL usuarioTiendaServiceIMPL) {
+        this.usuarioTiendaServiceIMPL = usuarioTiendaServiceIMPL;
     }
 
-    // Obtener todos las tiendas
+    // Obtener todos los usuarios tienda
     @GetMapping
-    public List<UsuarioTienda> obtenerTodasLasTiendas(){
-        return usuarioTiendaRepository.findAll();
+    @RequestMapping(value = "obtenerTodosLosUsuariosTienda", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerTodosLosUsuariosTienda(){
+        List<UsuarioTienda> usuariosTiendaList = this.usuarioTiendaServiceIMPL.obtenerTodosLosUsuariosTienda();
+        return ResponseEntity.ok(usuariosTiendaList);
     }
 
     // Obtener tienda por ID
     @GetMapping("/{id}")
-    public UsuarioTienda obtenerTiendaPorId(@PathVariable Long id){
-        return usuarioTiendaRepository.findById(id).orElse(null);
+    @RequestMapping(value = "obtenerUsuarioTiendaPorId/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerUsuarioTiendaPorId(@PathVariable Long id){
+        UsuarioTienda usuarioTienda = this.usuarioTiendaServiceIMPL.obtenerUsuarioTiendaPorId(id);
+        return ResponseEntity.ok(usuarioTienda);
     }
 
     // Crear un Nueva Tienda
     @PostMapping
-    public UsuarioTienda crearUsuarioTienda(@RequestBody UsuarioTienda usuarioTienda){
-        return usuarioTiendaRepository.save(usuarioTienda);
+    @RequestMapping(value = "crearUsuarioTienda", method = RequestMethod.POST)
+    public ResponseEntity<?> crearUsuarioTienda(@RequestBody UsuarioTienda usuarioTienda){
+        return ResponseEntity.ok(usuarioTiendaServiceIMPL.crearUsuarioTienda(usuarioTienda));
     }
 
     // Modificar Tienda
-    @PutMapping("/{id}")
-    public UsuarioTienda modificarUsuarioTienda(@PathVariable Long id, @RequestBody UsuarioTienda nuevoUsuarioTienda){
-        return usuarioTiendaRepository.findById(id).map(usuarioTienda-> {
-            usuarioTienda.setName(nuevoUsuarioTienda.getName());
-            usuarioTienda.setTypeBussines(nuevoUsuarioTienda.getTypeBussines());
-            usuarioTienda.setTypeDocument(nuevoUsuarioTienda.getTypeDocument());
-            usuarioTienda.setNumberDocument(nuevoUsuarioTienda.getNumberDocument());
-            usuarioTienda.setLocality(nuevoUsuarioTienda.getLocality());
-            usuarioTienda.setAddress(nuevoUsuarioTienda.getAddress());
-            usuarioTienda.setEmail(nuevoUsuarioTienda.getEmail());
-            usuarioTienda.setPhone(nuevoUsuarioTienda.getPhone());
-            usuarioTienda.setUsername(nuevoUsuarioTienda.getUsername());
-            usuarioTienda.setPassword(nuevoUsuarioTienda.getPassword());
-            return usuarioTiendaRepository.save(usuarioTienda);
-        }).orElse((null));
+    @PutMapping
+    @RequestMapping(value = "modificarUsuarioTienda/{id}",method = RequestMethod.PUT)
+    public ResponseEntity<?> modificarUsuarioTienda(@PathVariable Long id, @RequestBody UsuarioTienda usuarioTienda){
+        UsuarioTienda nuevoUsuarioTienda=this.usuarioTiendaServiceIMPL.modificarUsuarioTienda(id, usuarioTienda);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuarioTienda);
     }
 
     // Eliminar Tienda
-    @DeleteMapping("/{id}")
-    public void eliminarUsuarioTienda(@PathVariable Long id){
-        usuarioTiendaRepository.deleteById(id);
+    @DeleteMapping
+    @RequestMapping(value = "eliminarUsuarioTienda/{id}",method = RequestMethod.DELETE)
+    public ResponseEntity<?> eliminarUsuarioTienda(@PathVariable Long id){
+        this.usuarioTiendaServiceIMPL.eliminarUsuarioTienda(id);
+        return ResponseEntity.ok().build();
     }
 }
 
