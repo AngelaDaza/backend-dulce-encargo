@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/compras")
-@CrossOrigin(origins = "http://127.0.0.1:5502")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class ComprasController {
     @Autowired
     private final ComprasServiceIMPL comprasServiceIMPL;

@@ -1,9 +1,9 @@
 package com.dulceencargo.dulceencargo.Service;
 
-import com.dulceencargo.dulceencargo.Entity.Producto;
 import com.dulceencargo.dulceencargo.Entity.UsuarioCliente;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UsuarioClienteService {
     // Obtener todos los usuarios
@@ -20,4 +20,6 @@ public interface UsuarioClienteService {
 
     //Eliminar usuario
     public void eliminarUsuarioCliente (Long id);
+
+    public Optional<UsuarioCliente> findByUsernameAndPassword(String username, String password);
 }

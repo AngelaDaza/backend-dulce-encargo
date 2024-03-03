@@ -10,11 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/usuariocliente")
-@CrossOrigin(origins = "http://127.0.0.1:5502")
-public class UsuarioClienteController {
+@CrossOrigin(origins = "http://127.0.0.1:5500")
+public class UsuarioClienteController<LoginRequest> {
     @Autowired
     private final UsuarioClienteServiceIMPL usuarioClienteServiceIMPL;
 
@@ -42,6 +43,23 @@ public class UsuarioClienteController {
     @RequestMapping(value = "crearUsuarioCliente", method = RequestMethod.POST)
     public ResponseEntity<?> crearUsuarioCliente(@RequestBody UsuarioCliente usuarioCliente){
         return ResponseEntity.ok(usuarioClienteServiceIMPL.crearUsuarioCliente(usuarioCliente));
+    }
+
+    /*@PostMapping
+    @RequestMapping(value="validarCredenciales", method = RequestMethod.POST)
+    public ResponseEntity<?> validarCredenciales(@RequestBody String username, @RequestBody String password){
+        this.usuarioClienteServiceIMPL.findByUsernameAndPassword(username, password);
+        return ResponseEntity.ok().build();
+    }*/
+    @PostMapping
+    @RequestMapping(value="validarCredenciales", method = RequestMethod.POST)
+    public ResponseEntity<?> validarCredenciales(@RequestBody UsuarioCliente usuarioCliente){
+        Optional<UsuarioCliente> usuarioValidado = usuarioClienteServiceIMPL.findByUsernameAndPassword(usuarioCliente.getUsername(), usuarioCliente.getPassword());
+        if (usuarioValidado.isPresent()) {
+            return ResponseEntity.ok().body("Credenciales válidas");
+        } else {
+            return ResponseEntity.badRequest().body("Credenciales inválidas");
+        }
     }
 
     // Modificar Cliente

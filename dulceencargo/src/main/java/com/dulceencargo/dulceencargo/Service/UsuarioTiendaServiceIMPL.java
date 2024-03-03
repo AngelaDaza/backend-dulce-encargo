@@ -1,6 +1,7 @@
 package com.dulceencargo.dulceencargo.Service;
 
 import com.dulceencargo.dulceencargo.Entity.Producto;
+import com.dulceencargo.dulceencargo.Entity.UsuarioCliente;
 import com.dulceencargo.dulceencargo.Entity.UsuarioTienda;
 import com.dulceencargo.dulceencargo.Repository.UsuarioTiendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,10 @@ public class UsuarioTiendaServiceIMPL implements UsuarioTiendaService {
     @Override
     public void eliminarUsuarioTienda(Long id) {
         usuarioTiendaRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<UsuarioTienda> findByUsernameAndPassword(String username, String password) {
+        return usuarioTiendaRepository.findByUsernameAndPassword(username, password);
     }
 }

@@ -4,6 +4,7 @@ import com.dulceencargo.dulceencargo.Entity.UsuarioCliente;
 import com.dulceencargo.dulceencargo.Entity.UsuarioTienda;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UsuarioTiendaService {
     // Obtener todos los usuarios
@@ -20,4 +21,6 @@ public interface UsuarioTiendaService {
 
     //Eliminar usuario
     public void eliminarUsuarioTienda (Long id);
+
+    public Optional<UsuarioTienda> findByUsernameAndPassword(String username, String password);
 }
