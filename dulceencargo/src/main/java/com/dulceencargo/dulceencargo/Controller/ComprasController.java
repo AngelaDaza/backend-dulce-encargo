@@ -1,11 +1,13 @@
 package com.dulceencargo.dulceencargo.Controller;
 
 import com.dulceencargo.dulceencargo.Entity.Compras;
+import com.dulceencargo.dulceencargo.Entity.Producto;
 import com.dulceencargo.dulceencargo.Entity.UsuarioCliente;
 import com.dulceencargo.dulceencargo.Repository.ComprasRepository;
 import com.dulceencargo.dulceencargo.Service.ComprasServiceIMPL;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,4 +69,11 @@ public class ComprasController {
         List<Compras> compra = this.comprasServiceIMPL.findByUsuarioCliente(usuarioCliente);
         return ResponseEntity.ok(compra);
     }*/
+
+    @PutMapping
+    @RequestMapping(value = "modificarEstadoCompra/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> modificarEstadoCompra(@PathVariable Long id, @RequestBody Compras compra){
+        Compras nuevoCompra=this.comprasServiceIMPL.modificarEstadoCompra(id, compra);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCompra);
+    }
 }
