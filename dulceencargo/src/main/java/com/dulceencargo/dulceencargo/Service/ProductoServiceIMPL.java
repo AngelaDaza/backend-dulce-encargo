@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -48,7 +49,11 @@ public class ProductoServiceIMPL implements ProductoService{
             producto.setRegularPrice(nuevoProducto.getRegularPrice());
             producto.setFinalPrice(nuevoProducto.getFinalPrice());
             producto.setCategory(nuevoProducto.getCategory());
-            producto.setIdTienda(nuevoProducto.getIdTienda());
+
+            if (Objects.nonNull(nuevoProducto.getIdTienda())){
+                producto.setIdTienda(nuevoProducto.getIdTienda());
+            }
+
             return productoRepository.save(producto);
         }).orElse((null));
     }
