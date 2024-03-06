@@ -30,7 +30,7 @@ public class UsuarioTienda {
     private String username;
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "idTienda")
+    /*@OneToMany(cascade = CascadeType.ALL , mappedBy = "idTienda")
     @JsonManagedReference
-    private List<Producto> productos;
+    private List<Producto> productos;*/
 }

@@ -21,6 +21,7 @@ public class Producto {
     @SequenceGenerator(name = "producto_seq", sequenceName = "producto_seq")
     private Long id;
     private String name;
+    @Column(length = 350)
     private String urlImage;
     private String description;
     private Integer stock;
@@ -34,7 +35,6 @@ public class Producto {
 
     @ManyToOne
     @JoinColumn(name = "id_usuarioTienda", nullable = false)
-    @JsonBackReference
     private UsuarioTienda idTienda;
 
 }
